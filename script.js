@@ -10,3 +10,18 @@ function classof(o) {
 // classof(()=>{})  // => "Function"
 // classof(new Date ())  // => "Date"
 //=======================================
+//
+//
+//=======================================
+// Асинхронно загружает и выполняет сценарий из указанного URL.
+// Возвращает объект Promise, который разрешается, когда сценарий загружен
+function importScript(url) {
+  return new Promise((resolve, reject) => {
+    let s = document.createElement ("script"); // Создать элемент <script>.
+    s.onload = () => { resolve(); }; // Разрешить объект Promise, когда сценарий загружен,
+    s.onerror = (е) => { reject(е); };// Отклонить объект Promise в случае неудачи.
+    s.src = url; // Установить URL сценария,
+    document .head, append (s); //Добавить <script> в документ
+  });
+}
+//=======================================
