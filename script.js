@@ -52,3 +52,19 @@ fetch(url)
     document.dispatchEvent(new CustomEvent("busy", { detail: false }));
   });
 //=======================================
+//
+//
+//=======================================
+// Эта функция осуществляет переключение между "светлой" и "темной" темами
+// Для этого в <link rel="stylesheet" id="light-theme"> или <style id="dark-theme"> должен быть id.
+function toggleTheme() {
+  let lightTheme = document .querySelector ("#light-theme");
+  let darkTheme = document.querySelector("#dark-theme");
+  if (darkTheme.disabled) { // В текущий момент светлая тема, переключить на темную.
+    lightTheme. disabled = true;
+    darkTheme.disabled = false;
+  } else { // В текущий момент темная тема, переключить на светлую.
+    lightTheme.disabled = false;
+    darkTheme.disabled = true;
+  }
+}
