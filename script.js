@@ -193,3 +193,31 @@ async function findGoodPicture(url) {
 
 findGoodPicture("https://picsum.photos/2000/3000");
 }
+//=======================================
+//
+//
+//=======================================
+// Эта функция похожа на fetch (), но добавляет поддержку свойства
+// тайм-аута (timeout) в объекте параметров (options) и прекращает
+// извлечение, если оно не завершилось за количество миллисекунд,
+// указанное в timeout.
+function fetchWithTimeout(url, options = {}) {
+  if (options.timeout) {
+    // Если свойство timeout существует и не равно нулю
+    let controller = new AbortController(); // тогда создать контроллер
+    options.signal = controller.signal; // и установить свойство signal.
+    // Запустить таймер, который будет посылать сигнал прекращения
+    // по прошествии указанного количество миллисекунд. Обратите
+    // внимание, что мы никогда не отменяем этот таймер. Вызов abort()
+    // после того, как извлечение завершено, не имеет эффекта.
+    setTimeout(() => {
+      controller.abort();
+    }, options.timeout);
+  }
+  // Теперь просто выполнить нормальное извлечение.
+  return fetch(url, options);
+}
+
+fetchWithTimeout("https://picsum.photos/2000/3000", { timeout: 200 }).then(
+  (res) => console.log(res)
+);
