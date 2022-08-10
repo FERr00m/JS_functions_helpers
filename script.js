@@ -250,3 +250,31 @@ function getCookies() {
   }
   return cookies;
 }
+//=======================================
+//
+//
+//=======================================
+// Сохраняет пару имя/значение как cookie-набор, кодируя значение
+// с помощью encodeURIComponent () для отмены точек с запятой,
+// запятых и пробелов.
+// options = { 'max-age': 5, 'path': '/', 'domain': 'example.com', 'secure': 'secure' }
+// Передача 0 приводит к удалению cookie-набора,
+function setCookie(
+  name,
+  value,
+  options = { "max-age": "", path: "", domain: "", secure: "" }
+) {
+  let cookie = `${name}=${encodeURIComponent(value)}`;
+  for (const option in options) {
+    if (options[option] !== "") {
+      if (option === "max-age") {
+        cookie += `; ${option}=${options[option] * 60 * 60 * 24}`;  // max-age принимает количество дней и переводит в секунды
+      } else if (option === "secure") {
+        cookie += `; ${option}`;
+      } else {
+        cookie += `; ${option}=${options[option]}`;
+      }
+    }
+  }
+  document.cookie = cookie;
+}
