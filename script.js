@@ -68,6 +68,10 @@ function toggleTheme() {
     darkTheme.disabled = true;
   }
 }
+//=======================================
+//
+//
+//=======================================
 {
   // Заблаговременно загрузить звуковой эффект,
   // чтобы он был готов к использованию.
@@ -221,3 +225,28 @@ function fetchWithTimeout(url, options = {}) {
 fetchWithTimeout("https://picsum.photos/2000/3000", { timeout: 200 }).then(
   (res) => console.log(res)
 );
+//=======================================
+//
+//
+//=======================================
+// Возвращает cookie-наборы документа как объект Мар.
+// Предполагает, что значения cookie-наборов
+// закодированы посредством encodeURIComponent ().
+// document.cookie = `version=${encodeURIComponent(document.lastModified)}`;
+function getCookies() {
+  const cookies = new Map(); // Объект, который будет возвращен,
+  const all = document.cookie; // Получить все cookie-наборы в одной большой строке.
+  const list = all.split("; "); // Разбить на индивидуальные пары имя/значение.
+  for (const cookie of list) {
+    //Для каждого cookie-набора в этом списке:
+    if (!cookie.includes("=")) continue; // Пропустить, если нет знака =
+
+    const p = cookie.indexOf("="); // Найти первый знак =.
+    const name = cookie.substring(0, p); // Получить имя cookie-набора
+    let value = cookie.substring(p + 1); // Получить значение cookie-набора.
+
+    value = decodeURIComponent(value); // Декодировать значение,
+    cookies.set(name, value); // Запомнить имя и значение cookie-набора.
+  }
+  return cookies;
+}
