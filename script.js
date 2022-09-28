@@ -299,5 +299,19 @@ function htmlEscape(text) {
   }
  });
 }
-  
-
+//=======================================
+//
+//
+//=======================================
+// Метод сравнивает string с string2 и возвращает в каком отношении (в алфавитном порядке)
+// они друг к другу относятся 
+function determineOrder(string, string2) {
+ let result = string.toLowerCase().localeCompare(string2.toLowerCase());
+ if (result < 0) {
+  console.log(`Строка '${string}' находится ДО строки '${string2}'.`);
+ } else if (result > 0) {
+  console.log(`Строка '${string}' находится ПОСЛЕ строки '${string2}'.`);
+ } else {
+  console.log(`Строка '${string}' идентична строке '${string2}'.`);
+ }
+}
