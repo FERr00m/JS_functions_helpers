@@ -21,7 +21,7 @@ function importScript(url) {
     s.onload = () => { resolve(); }; // Разрешить объект Promise, когда сценарий загружен,
     s.onerror = (е) => { reject(е); };// Отклонить объект Promise в случае неудачи.
     s.src = url; // Установить URL сценария,
-    document.head, append (s); //Добавить <script> в документ
+    document.head.append(s); //Добавить <script> в документ
   });
 }
 //=======================================
