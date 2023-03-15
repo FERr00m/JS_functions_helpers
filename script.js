@@ -319,14 +319,17 @@ function determineOrder(string, string2) {
 //
 //
 //=======================================
-// Метод сериализирует форму
-function serialize(form) {
-  let parts = [];
+// Метод сериализирует форму в вмде строки запроса либо в JSON формате
+function serialize(form, json = false) {
+  let body = json ? {} : [];
   let optValue;
   for (let field of form.elements) {
     switch (field.type) {
       case "select-one":
       case "select-multiple":
+        if (json && field.type === "select-multiple") {
+          body[encodeURIComponent(field.name)] = [];
+        }
         if (field.name.length) {
           for (let option of field.options) {
             if (option.selected) {
@@ -340,11 +343,20 @@ function serialize(form) {
                   ? option.value
                   : option.text;
               }
-              parts.push(
-                encodeURIComponent(field.name) +
-                  "=" +
+              if (json && field.type === "select-multiple") {
+                body[encodeURIComponent(field.name)].push(
                   encodeURIComponent(optValue)
-              );
+                );
+              } else if (json && field.type === "select-one") {
+                body[encodeURIComponent(field.name)] =
+                  encodeURIComponent(optValue);
+              } else {
+                body.push(
+                  encodeURIComponent(field.name) +
+                    "=" +
+                    encodeURIComponent(optValue)
+                );
+              }
             }
           }
         }
@@ -363,13 +375,18 @@ function serialize(form) {
       default:
         // поля формы без имен не сериализуются
         if (field.name.length) {
-          parts.push(
-            `${encodeURIComponent(field.name)}=${encodeURIComponent(
+          if (json) {
+            body[encodeURIComponent(field.name)] = encodeURIComponent(
               field.value
-            )}`
-          );
+            );
+          } else {
+            body.push(
+              `${encodeURIComponent(field.name)}=${encodeURIComponent(
+                field.value
+              )}`
+            );
+          }
         }
     }
   }
-  return parts.join("&");
-}
+  return json ? JSON.stringify(body) : body.join("&");
