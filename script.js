@@ -315,3 +315,61 @@ function determineOrder(string, string2) {
   console.log(`Строка '${string}' идентична строке '${string2}'.`);
  }
 }
+//=======================================
+//
+//
+//=======================================
+// Метод сериализирует форму
+function serialize(form) {
+  let parts = [];
+  let optValue;
+  for (let field of form.elements) {
+    switch (field.type) {
+      case "select-one":
+      case "select-multiple":
+        if (field.name.length) {
+          for (let option of field.options) {
+            if (option.selected) {
+              optValue = "";
+              if (option.hasAttribute) {
+                optValue = option.hasAttribute("value")
+                  ? option.value
+                  : option.text;
+              } else {
+                optValue = option.attributes["value"].specified
+                  ? option.value
+                  : option.text;
+              }
+              parts.push(
+                encodeURIComponent(field.name) +
+                  "=" +
+                  encodeURIComponent(optValue)
+              );
+            }
+          }
+        }
+        break;
+      case undefined: // коллекция полей
+      case "file": // поле добавления файлов
+      case "submit": // кнопка отправки
+      case "reset": // кнопка сброса
+      case "button": // пользовательская кнопка
+        break;
+      case "radio": // переключатель
+      case "checkbox": // флажок
+        if (!field.checked) {
+          break;
+        }
+      default:
+        // поля формы без имен не сериализуются
+        if (field.name.length) {
+          parts.push(
+            `${encodeURIComponent(field.name)}=${encodeURIComponent(
+              field.value
+            )}`
+          );
+        }
+    }
+  }
+  return parts.join("&");
+}
