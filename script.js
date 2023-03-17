@@ -469,4 +469,48 @@ export default class Utils {
     }
     return json ? JSON.stringify(body) : body.join("&");
   }
+  //=======================================
+  //
+  //
+  //=======================================
+  // Метод читает файлы и выводит их содержание и размер
+  fileReader(inputSelector, outputSelector, progressSelector) {
+    let filesList = document.querySelector(inputSelector);
+    filesList.addEventListener("change", (event) => {
+      let info = "",
+        output = document.querySelector(outputSelector),
+        progress = document.querySelector(progressSelector),
+        files = event.target.files,
+        type = "default",
+        reader = new FileReader();
+      if (/image/.test(files[0].type)) {
+        reader.readAsDataURL(files[0]);
+        type = "image";
+      } else {
+        reader.readAsText(files[0]);
+        type = "text";
+      }
+      reader.onerror = function () {
+        output.innerHTML =
+          "Could not read file, error code is " + reader.error.code;
+      };
+      reader.onprogress = function (event) {
+        if (event.lengthComputable) {
+          progress.innerHTML = `${event.loaded}/${event.total}`;
+        }
+      };
+      reader.onload = function () {
+        let html = "";
+        switch (type) {
+          case "image":
+            html = `<img src="${reader.result}">`;
+            break;
+          case "text":
+            html = reader.result;
+            break;
+        }
+        output.innerHTML = html;
+      };
+    });
+  }
 }
