@@ -1,21 +1,39 @@
 export default class Utils {
-  //=======================================
-  // получить "атрибут класса" объекта, содержаий информацию о типе, которая по-другому не доступна.
-  // Следующая функция classof() возможно полезнее, чем операция
-  // typeof, которая не делает никаких различий между типам и объектов
-  classof(o) {
+  constructor() {
+    console.info(`Utils loaded.
+ _____ _____ _____     ___ ___
+|   __|   __| __  |___|   |   |_____
+|   __|   __|    -|  _| | | | |     |
+|__|  |_____|__|__|_| |___|___|_|_|_|
+    `);
+  }
+  /**
+   * Метод получает "атрибут класса" объекта, содержаий информацию о типе, которая по-другому не доступна.
+   * функция classof() возможно полезнее, чем операция typeof, которая не делает никаких различий между типам и объектов
+   *
+   * Примеры:
+   * classof(1) => "Number"
+   * classof(()=>{}) => "Function"
+   * classof(new Date ()) => "Date"
+   *
+   * @param {any} object - Любая сущность.
+   * @returns {string}
+   *
+   */
+  classof(object) {
     return Object.prototype.toString.call(o).slice(8, -1);
   }
-
   // classof(1)  // => "Number"
   // classof(()=>{})  // => "Function"
   // classof(new Date ())  // => "Date"
-  //=======================================
-  //
-  //
-  //=======================================
-  // Асинхронно загружает и выполняет сценарий из указанного URL.
-  // Возвращает объект Promise, который разрешается, когда сценарий загружен
+  /**
+   * Метод асинхронно загружает и выполняет сценарий из указанного URL.
+   * Возвращает объект Promise, который разрешается, когда сценарий загружен
+   *
+   * @param {string} url - Адрес скрипта.
+   * @returns {Promise}
+   *
+   */
   importScript(url) {
     return new Promise((resolve, reject) => {
       let s = document.createElement("script"); // Создать элемент <script>.
@@ -29,15 +47,25 @@ export default class Utils {
       document.head.append(s); //Добавить <script> в документ
     });
   }
-  //=======================================
-  //
-  //
-  //=======================================
-  // Инит и обработка кастомных событий
+  /**
+   * Метод осуществляет инит и обработку кастомных событий
+   *
+   * @param {string} name - Имя события.
+   * @param {Function} callback - Функция колбэк, которая сработает при диспатче события.
+   * @returns {void}
+   *
+   */
   setDispather(name, callback) {
     document.addEventListener(name, callback);
   }
-
+  /**
+   * Метод запускает событие
+   *
+   * @param {string} name - Имя события.
+   * @param {object} data - Объект параметров.
+   * @returns {void}
+   *
+   */
   initEvent(name, data = { detail: true }) {
     document.dispatchEvent(new CustomEvent(name, data));
   }
@@ -64,15 +92,20 @@ export default class Utils {
   //     // пользовательский интерфейс о том, что мы больше не заняты,
   //     initEvent("busy", { detail: false });
   //   });
-  //=======================================
-  //
-  //
-  //=======================================
+  /**
+   * Метод осуществляет переключение между "светлой" и "темной" темами
+   * Для этого в <link rel="stylesheet" id="light-theme"> или <style id="dark-theme"> должен быть id или любой другой селектор.
+   *
+   * @param {string} lightThemeSelector - Селектор светлой темы.
+   * @param {string} darkThemeSelector - Селектор тёмной темы.
+   * @returns {void}
+   *
+   */
   // Эта функция осуществляет переключение между "светлой" и "темной" темами
   // Для этого в <link rel="stylesheet" id="light-theme"> или <style id="dark-theme"> должен быть id.
-  toggleTheme() {
-    let lightTheme = document.querySelector("#light-theme");
-    let darkTheme = document.querySelector("#dark-theme");
+  toggleTheme(lightThemeSelector, darkThemeSelector) {
+    let lightTheme = document.querySelector(lightThemeSelector);
+    let darkTheme = document.querySelector(darkThemeSelector);
     if (darkTheme.disabled) {
       // В текущий момент светлая тема, переключить на темную.
       lightTheme.disabled = true;
@@ -83,13 +116,15 @@ export default class Utils {
       darkTheme.disabled = true;
     }
   }
-  //=======================================
-  //
-  //
-  //=======================================
+  /**
+   * Метод заблаговременно грузит звуковой эффект, чтобы он был готов к использованию.
+   * Воспроизводит звуковой эффект всякий раз, когда пользователь щелкает кнопкой мыши.
+   *
+   * @param {string} source - Источник аудио.
+   * @returns {void}
+   *
+   */
   loadAudio(source) {
-    // Заблаговременно загрузить звуковой эффект,
-    // чтобы он был готов к использованию.
     let soundeffect = new Audio(source);
     // Воспроизводить звуковой эффект всякий раз,
     // когда пользователь щелкает кнопкой мыши.
@@ -102,22 +137,20 @@ export default class Utils {
     // Этого нам нужно множество элементов <audio>. Поскольку элементы <audio>
     // Не Добавлялись к документу, они будут подвергнуты сборке мусора, когда заокончат воспроизведение.
   }
-  //=======================================
-  //
-  //
-  //=======================================
-  // Функцию randomInteger(min, max), которая генерирует случайное целое (integer) число от min до max (включительно).
+  /**
+   * Метод генерирует случайное(псевдо) целое число от min до max (включительно).
+   *
+   * @param {number} min - Минимальное число.
+   * @param {number} max - Максимальное число.
+   * @returns {number}
+   *
+   */
   randomInteger(min, max) {
     // случайное число от min до (max+1)
     let rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
-  //=======================================
-  //
-  //
-  //=======================================
-
-  /*
+  /**
    * Асинхронная функция для потоковой передачи тела объекта Response,
    * полученного из запроса fetch(). Принимает в первом аргументе
    * объект Response и за ним два необязательных обратных вызова.
@@ -138,30 +171,13 @@ export default class Utils {
    * Если обратный вызов processChunk был предоставлен, тогда эта строка
    * является сцеплением значений, возвращенных processChunk. Иначе строка
    * будет сцеплением значений порций, преобразованных в строки UTF-8.
+   *
+   * @param {string} url - Адрес запроса.
+   * @param {string} optiselectorProgressons - Селектор прогрессбара
+   * @param {string} selectorImg - Селектор img куда вывести изображение
+   * @returns {Promise}
    */
   async findGoodPicture(url, selectorProgress, selectorImg = "") {
-    /*
-     * Асинхронная функция для потоковой передачи тела объекта Response,
-     * полученного из запроса fetch(). Принимает в первом аргументе
-     * объект Response и за ним два необязательных обратных вызова.
-     *
-     * Если вы указали функцию в качестве второго аргумента, то этот обратный
-     * вызов reportProgress будет вызываться один раз для каждой получаемой порции.
-     * В первом аргументе передается общее количество байтов, полученных до сих пор.
-     * Во втором аргументе передается число между 0 и 1, которое указывает,
-     * насколько загрузка завершена. Однако если объект Response не имеет
-     * заголовка "Content-Length”, тогда вторым аргументом всегда будет NaN.
-     *
-     * Если вы хотите обрабатывать данные в порциях, когда они прибывают,
-     * то укажите функцию в третьем аргументе. Порции будут передаваться
-     * этому обратному вызову
-     * processChunk как объекты Uint8Array.
-     *
-     * streamBody() возвращает объект Promise, который разрешается в строку.
-     * Если обратный вызов processChunk был предоставлен, тогда эта строка
-     * является сцеплением значений, возвращенных processChunk. Иначе строка
-     * будет сцеплением значений порций, преобразованных в строки UTF-8.
-     */
     async function streamBody(
       response,
       reportProgress,
@@ -248,16 +264,18 @@ export default class Utils {
       .then((res) => console.log(res))
       .catch((err) => console.warn(err));
   }
-
-  //findGoodPicture("https://picsum.photos/2000/3000");
-  //=======================================
-  //
-  //
-  //=======================================
-  // Эта функция похожа на fetch (), но добавляет поддержку свойства
-  // тайм-аута (timeout) в объекте параметров (options) и прекращает
-  // извлечение, если оно не завершилось за количество миллисекунд,
-  // указанное в timeout.
+  /**
+   * Метод похожа на fetch (), но добавляет поддержку свойства тайм-аута (timeout) в объекте параметров (options)
+   * и прекращает извлечение, если оно не завершилось за количество миллисекунд, указанное в timeout.
+   *
+   * fetchWithTimeout("https://picsum.photos/2000/3000", { timeout: 200 })
+   *  .then((res) => console.log(res));
+   *
+   * @param {string} url - Адрес запроса.
+   * @param {object} options - Параметры { timeout: 200 }
+   * @returns {Promise}
+   *
+   */
   fetchWithTimeout(url, options = {}) {
     if (options.timeout) {
       // Если свойство timeout существует и не равно нулю
@@ -274,18 +292,12 @@ export default class Utils {
     // Теперь просто выполнить нормальное извлечение.
     return fetch(url, options);
   }
-
-  // fetchWithTimeout("https://picsum.photos/2000/3000", { timeout: 200 }).then(
-  //   (res) => console.log(res)
-  // );
-  //=======================================
-  //
-  //
-  //=======================================
-  // Возвращает cookie-наборы документа как объект Мар.
-  // Предполагает, что значения cookie-наборов
-  // закодированы посредством encodeURIComponent ().
-  // document.cookie = `version=${encodeURIComponent(document.lastModified)}`;
+  /**
+   * Метод возвращает cookie-наборы документа как объект Мар.
+   * Предполагает, что значения cookie-наборов закодированы посредством encodeURIComponent ().
+   * @returns {Map}
+   *
+   */
   getCookies() {
     const cookies = new Map(); // Объект, который будет возвращен,
     const all = document.cookie; // Получить все cookie-наборы в одной большой строке.
@@ -303,15 +315,20 @@ export default class Utils {
     }
     return cookies;
   }
-  //=======================================
-  //
-  //
-  //=======================================
-  // Сохраняет пару имя/значение как cookie-набор, кодируя значение
-  // с помощью encodeURIComponent () для отмены точек с запятой,
-  // запятых и пробелов.
-  // options = { 'max-age': 5, 'path': '/', 'domain': 'example.com', 'secure': 'secure' }
-  // Передача 0 приводит к удалению cookie-набора,
+  /**
+   * Метод сохраняет пару имя/значение как cookie-набор, кодируя значение
+   * с помощью encodeURIComponent () для отмены точек с запятой,
+   * запятых и пробелов.
+   * Передача 'max-age': 0 приводит к удалению cookie-набора.
+   *
+   * Пример
+   * options = { 'max-age': 5, 'path': '/', 'domain': 'example.com', 'secure': 'secure' }
+   * @param {string} name - Название куки.
+   * @param {string} value - Значение куки.
+   * @param {object} options - Параметры куки.
+   * @returns {void}
+   *
+   */
   setCookie(
     name,
     value,
@@ -331,13 +348,12 @@ export default class Utils {
     }
     document.cookie = cookie;
   }
-  //=======================================
-  //
-  //
-  //=======================================
-  // Приведение в безопасный вид текста.
-  // console.log(htmlEscape("<p class=\"greeting\">Hello world!</p>"));
-  // "&lt;p class=&quot;greeting&quot;&gt;Hello world!&lt;/p&gt";
+  /**
+   * Метод приводит html в безопасный вид текста.
+   * @param {string} text - Текст для обработки.
+   * @returns {string}
+   *
+   */
   htmlEscape(text) {
     return text.replace(/[<>"&]/g, function (match, pos, originalText) {
       switch (match) {
@@ -352,12 +368,14 @@ export default class Utils {
       }
     });
   }
-  //=======================================
-  //
-  //
-  //=======================================
-  // Метод сравнивает string с string2 и возвращает в каком отношении (в алфавитном порядке)
-  // они друг к другу относятся
+  /**
+   * Метод сравнивает string с string2 и возвращает в каком отношении (в алфавитном порядке)
+   * они друг к другу расположены.
+   * @param {string} string - Первая строка.
+   * @param {string} string2 - Вторая строка.
+   * @returns {boolean}
+   *
+   */
   determineOrder(string, string2) {
     let result = string.toLowerCase().localeCompare(string2.toLowerCase());
     if (result < 0) {
@@ -367,21 +385,24 @@ export default class Utils {
     } else {
       console.log(`Строка '${string}' идентична строке '${string2}'.`);
     }
+    return result;
   }
-  //=======================================
-  //
-  //
-  //=======================================
-  // Массив объектов сортирует 
-  // по произвольному свойству объекта
-  // let data = [
-  //   {name: "Zachary", age: 28},
-  //   {name: "Nicholas", age: 29}
-  // ];
-  // data.sort(createComparisonFunction("name"));
-  // console.log(data[0].name); // Nicholas
+  /**
+   * Метод сортирует массив объектов по нужному свойству объекта.
+   * Пример:
+   *
+   * let data = [
+   *  {name: "Zachary", age: 28},
+   *  {name: "Nicholas", age: 29}
+   * ];
+   * data.sort(createComparisonFunction("name"));
+   * console.log(data[0].name); // Nicholas
+   * @param {string} propertyName - Имя свойства, по которому нужно провести сортировку.
+   * @returns {object}
+   *
+   */
   createComparisonFunction(propertyName) {
-    return function(object1, object2) {
+    return function (object1, object2) {
       let value1 = object1[propertyName];
       let value2 = object2[propertyName];
       if (value1 < value2) {
@@ -391,13 +412,15 @@ export default class Utils {
       } else {
         return 0;
       }
-    }
+    };
   }
-  //=======================================
-  //
-  //
-  //=======================================
-  // Метод сериализирует форму в вмде строки запроса либо в JSON формате
+  /**
+   * Метод сериализирует форму в виде строки запроса либо в JSON формате
+   * @param {Element} form - Форма, которая будет обрабатываться.
+   * @param {boolean} json - Возвращать данные в JSON или в виде строки запроса?
+   * @returns {string | JSON}
+   *
+   */
   serialize(form, json = false) {
     let body = json ? {} : [];
     let optValue;
@@ -469,11 +492,14 @@ export default class Utils {
     }
     return json ? JSON.stringify(body) : body.join("&");
   }
-  //=======================================
-  //
-  //
-  //=======================================
-  // Метод читает файлы и выводит их содержание и размер
+  /**
+   * Метод читает файлы и выводит их содержание и размер
+   * @param {string} inputSelector - Селектор, который находит инпут с файлом.
+   * @param {string} outputSelector - Селектор, который блок для вывода результата.
+   * @param {string} progressSelector - Селектор, который находит прогрессбар.
+   * @returns {void}
+   *
+   */
   fileReader(inputSelector, outputSelector, progressSelector) {
     let filesList = document.querySelector(inputSelector);
     filesList.addEventListener("change", (event) => {
@@ -512,5 +538,20 @@ export default class Utils {
         output.innerHTML = html;
       };
     });
+  }
+  /**
+   * Переопределение Math.random() с использованием CSPRNG может быть выполнено
+   * путем генерации одного случайного 32-битного числа и деления его на максимальное возможное значение,
+   * 0xFFFFFFFF. Это позволяет получить значение от 0 до 1:
+   * @returns {number}
+   *
+   */
+  randomFloat() {
+    // Генерация 32 рандомных битов
+    const fooArray = new Uint32Array(1);
+    // Максимальное значение — 2^32 - 1
+    const maxUint32 = 0xffffffff;
+    // Деление на максимальное возможное значение
+    return crypto.getRandomValues(fooArray)[0] / maxUint32;
   }
 }
