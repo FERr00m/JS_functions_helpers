@@ -554,4 +554,29 @@ export default class Utils {
     // Деление на максимальное возможное значение
     return crypto.getRandomValues(fooArray)[0] / maxUint32;
   }
+  /**
+   * Метод принимает индикатор серьезности ошибки и сообщение об ошибке.
+   * Объект Image выбран для отправки запроса из следующих соображений:
+   * 1. Он доступен во всех браузерах, даже тех, которые не поддерживают объект XMLHttpRequest.
+   * 2. На него не распространяются ограничения взаимодействия между доменами.
+   * Если один сервер должен принимать сведения об ошибках от многих других
+   * серверов, объект XMLHttpRequest не будет работать.
+   * 3. Это снижает вероятность сбоя во время протоколирования ошибки. Как правило, обмен данными по технологии Ajax
+   * осуществляется с помощью оболочек из JavaScript-библиотек.
+   * Если в коде библиотеки, которую вы пытаетесь использовать для протоколирования ошибки,
+   * случится сбой, сообщение об ошибке может быть утеряно
+   *
+   * logError("https://my-server.com/log.php", "nonfatal", 'Module init failed: ${ex.message}');
+   * @param {string} serverUrl - URL сервера, который примет сообщение об ошибке.
+   * @param {string} degree - Степень ошибки.
+   * @param {string} msg - Сообщение об ошибке.
+   * @returns {void}
+   *
+   */
+  logError(serverUrl, degree, msg) {
+    let img = new Image();
+    (encodedDegree = encodeURIComponent(degree)),
+      (encodedMsg = encodeURIComponent(msg));
+    img.src = "${serverUrl}?error=${encodedDegree}&msg=${encodedMsg}";
+  }
 }
