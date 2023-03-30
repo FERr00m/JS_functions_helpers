@@ -575,8 +575,8 @@ export default class Utils {
    */
   logError(serverUrl, degree, msg) {
     let img = new Image();
-    (encodedDegree = encodeURIComponent(degree)),
-      (encodedMsg = encodeURIComponent(msg));
-    img.src = "${serverUrl}?error=${encodedDegree}&msg=${encodedMsg}";
+    let encodedDegree = encodeURIComponent(degree);
+    let encodedMsg = encodeURIComponent(msg);
+    img.src = `${serverUrl}?error=${encodedDegree}&msg=${encodedMsg}`;
   }
 }
