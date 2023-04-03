@@ -579,4 +579,28 @@ export default class Utils {
     let encodedMsg = encodeURIComponent(msg);
     img.src = `${serverUrl}?error=${encodedDegree}&msg=${encodedMsg}`;
   }
+   /**
+   * Метод выводит отладочную инфу на страницу
+   * @param {string} message - Сообщение, которое будет показано
+   * @returns {void}
+   *
+   */
+  log(message) {
+    // Лексическая область этой функции будет использовать следующий экземпляр
+    // вместо window.console
+    let console = document.getElementById("debuginfo");
+    if (console === null) {
+      console = document.createElement("div");
+      console.id = "debuginfo";
+      console.style.background = "#dedede";
+      console.style.border = "1px solid silver";
+      console.style.padding = "5px";
+      console.style.width = "400px";
+      console.style.position = "absolute";
+      console.style.right = "0px";
+      console.style.top = "0px";
+      document.body.appendChild(console);
+    }
+    console.innerHTML += `<p> ${message}</p>`;
+  }
 }
