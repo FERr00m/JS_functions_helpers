@@ -603,4 +603,22 @@ export default class Utils {
     }
     console.innerHTML += `<p> ${message}</p>`;
   }
+  /**
+   * Метод проверяет параметры функции на их соответствие нужным условиям
+   *
+   * Пример:
+   * function divide(num1, num2) {
+   * assert(typeof num1 == "number" && typeof num2 == "number", "divide(): Both arguments must be numbers.");
+   * return num1 / num2;
+   * }
+   * @param {boolean} condition - Если в условиях будет false, будет создана ошибка
+   * @param {string} message - Сообщение, которое будет показано
+   * @returns {Error | void}
+   *
+   */
+  assert(condition, message) {
+    if (!condition) {
+      throw new Error(message);
+    }
+  }
 }
