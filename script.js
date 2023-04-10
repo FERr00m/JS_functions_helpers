@@ -1,10 +1,12 @@
 export default class Utils {
   constructor() {
     console.info(`Utils loaded.
- _____ _____ _____     ___ ___
-|   __|   __| __  |___|   |   |_____
-|   __|   __|    -|  _| | | | |     |
-|__|  |_____|__|__|_| |___|___|_|_|_|
+ _________________________________________
+|   _____ _____ _____     ___ ___         |
+|  |   __|   __| __  |___|   |   |_____   |
+|  |   __|   __|    -|  _| | | | |     |  |
+|  |__|  |_____|__|__|_| |___|___|_|_|_|  |
+|_________________________________________|
     `);
   }
   /**
@@ -579,7 +581,7 @@ export default class Utils {
     let encodedMsg = encodeURIComponent(msg);
     img.src = `${serverUrl}?error=${encodedDegree}&msg=${encodedMsg}`;
   }
-   /**
+  /**
    * Метод выводит отладочную инфу на страницу
    * @param {string} message - Сообщение, которое будет показано
    * @returns {void}
@@ -621,7 +623,7 @@ export default class Utils {
       throw new Error(message);
     }
   }
-   /**
+  /**
    * Метод возвращает уникальный id
    *
    * @returns {string}
@@ -634,5 +636,19 @@ export default class Utils {
         (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
       ).toString(16)
     );
+  }
+  /**
+   * Метод добавляет параметр запроса к урлу
+   *
+   * @param {string} url - Исходный урл
+   * @param {string} name - Имя параметра
+   * @param {string} value - Значение параметра
+   * @returns {string}
+   *
+   */
+  addURLParam(url, name, value) {
+    url += url.indexOf("?") == -1 ? "?" : "&";
+    url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+    return url;
   }
 }
