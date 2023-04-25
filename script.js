@@ -357,7 +357,7 @@ export default class Utils {
    *
    */
   htmlEscape(text) {
-    return text.replace(/[<>"&]/g, function (match, pos, originalText) {
+    return text.replace(/[<>'"&]/g, function (match, pos, originalText) {
       switch (match) {
         case "<":
           return "&lt;";
@@ -366,6 +366,8 @@ export default class Utils {
         case "&":
           return "&amp;";
         case '"':
+          return "&quot;";
+        case "'":
           return "&quot;";
       }
     });
